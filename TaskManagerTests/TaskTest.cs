@@ -47,7 +47,6 @@ public class TaskTest
 
         Assert.Equal(TaskStatus.Completed, task.Status);
         Assert.True(task.IsCompleted);
-        Assert.Equal("", task.Name);
     }
 
     [Fact]

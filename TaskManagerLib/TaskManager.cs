@@ -2,21 +2,16 @@ namespace TaskManagerLib;
 
 public class TaskManager : ITaskManager
 {
+    private static readonly int MaxTasks = 10;
     private readonly List<Task> _tasks = [];
     public List<Task> Tasks { get => _tasks; }
-    public TaskManager()
-    {
-        Tasks.Add(new Task(""));
-        Tasks.Add(new Task(""));
-        Tasks.Add(new Task(""));
-    }
 
     public void PrintTasks()
     {
         for (int i = 0; i < Tasks.Count; i++)
         {
             var taskName = string.IsNullOrEmpty(Tasks[i].Name) ? "Empty" : Tasks[i].Name;
-            var taskStatus = Tasks[i].Status == TaskStatus.Unknown ? "Unknown" : Tasks[i].Status.ToString();
+            var taskStatus = Tasks[i].Status.ToString();
 
             Console.WriteLine($"{i + 1}. {taskName} - {taskStatus}");
         }
@@ -24,18 +19,18 @@ public class TaskManager : ITaskManager
 
     public TaskManagerActionResult AddTask(string taskName)
     {
-        var task = Tasks?.FirstOrDefault(t => t.Name == "");
-
-        if (task == null)
+        if (Tasks.Count == MaxTasks)
             return new TaskManagerActionResult(false, TaskManagerError.NotAbleToAddTask);
 
-        task.SetName(taskName);
+        var task = new Task(taskName);
         task.SetStatus(TaskStatus.NotStarted);
+
+        Tasks.Add(task);
 
         return new TaskManagerActionResult(true);
     }
 
-    public TaskManagerActionResult UpdateTask(string taskName, TaskStatus status)
+    public TaskManagerActionResult SetTaskStatus(string taskName, TaskStatus status)
     {
         var task = Tasks?.FirstOrDefault(t => t.Name == taskName);
 
@@ -54,8 +49,7 @@ public class TaskManager : ITaskManager
         if (task == null || Tasks == null)
             return new TaskManagerActionResult(false, TaskManagerError.NotAbleToRemoveTask);
 
-        task.SetName("");
-        task.SetStatus(TaskStatus.Unknown);
+        Tasks.Remove(task);
 
         return new TaskManagerActionResult(true);
     }

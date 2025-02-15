@@ -6,13 +6,13 @@ using Xunit;
 public class TaskManagerTest
 {
     [Fact]
-    public void TaskManager_InitialTasksCount_ShouldBeThree()
+    public void TaskManager_InitialTasksCount_ShouldBeZero()
     {
         var taskManager = new TaskManager();
 
         var tasksCount = taskManager.Tasks.Count;
 
-        Assert.Equal(3, tasksCount);
+        Assert.Equal(0, tasksCount);
     }
 
     [Fact]
@@ -37,8 +37,15 @@ public class TaskManagerTest
         taskManager.AddTask("Task 1");
         taskManager.AddTask("Task 2");
         taskManager.AddTask("Task 3");
+        taskManager.AddTask("Task 4");
+        taskManager.AddTask("Task 5");
+        taskManager.AddTask("Task 6");
+        taskManager.AddTask("Task 7");
+        taskManager.AddTask("Task 8");
+        taskManager.AddTask("Task 9");
+        taskManager.AddTask("Task 10");
 
-        var result = taskManager.AddTask("Task 4");
+        var result = taskManager.AddTask("Task 11");
 
         Assert.False(result.IsSuccess);
         Assert.Equal(TaskManagerError.NotAbleToAddTask, result.Error);
@@ -80,7 +87,7 @@ public class TaskManagerTest
         var newStatus = TaskStatus.Completed;
 
         var task = taskManager.Tasks.FirstOrDefault(t => t.Name == taskName);
-        taskManager.UpdateTask(taskName, newStatus);
+        taskManager.SetTaskStatus(taskName, newStatus);
 
         Assert.NotNull(task);
         Assert.Equal(newStatus, task.Status);
@@ -94,7 +101,7 @@ public class TaskManagerTest
         var taskName = "Non Existent Task";
         var newStatus = TaskStatus.Completed;
 
-        var result = taskManager.UpdateTask(taskName, newStatus);
+        var result = taskManager.SetTaskStatus(taskName, newStatus);
 
         Assert.False(result.IsSuccess);
         Assert.Equal(TaskManagerError.NotAbleToSetTaskNoTaskFound, result.Error);
@@ -115,6 +122,5 @@ public class TaskManagerTest
         var output = sw.ToString().Trim();
         Assert.Contains("1. Task 1 - NotStarted", output);
         Assert.Contains("2. Task 2 - NotStarted", output);
-        Assert.Contains("3. Empty - Unknown", output);
     }
 }

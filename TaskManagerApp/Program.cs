@@ -83,14 +83,14 @@ internal class Program
                 taskName = TakeUserInputForTaskName();
                 if (!string.IsNullOrEmpty(taskName))
                 {
-                    ProcessTaskManagerActionResult(taskManager.UpdateTask(taskName, TaskStatus.InProgress));
+                    ProcessTaskManagerActionResult(taskManager.SetTaskStatus(taskName, TaskStatus.InProgress));
                 }
                 break;
             case OptionComplete:
                 taskName = TakeUserInputForTaskName();
                 if (!string.IsNullOrEmpty(taskName))
                 {
-                    ProcessTaskManagerActionResult(taskManager.UpdateTask(taskName, TaskStatus.Completed));
+                    ProcessTaskManagerActionResult(taskManager.SetTaskStatus(taskName, TaskStatus.Completed));
                 }
                 break;
             case OptionRemove:
